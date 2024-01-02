@@ -1,5 +1,6 @@
 package com.learning.usermanagementproject.controller;
 
+import com.learning.usermanagementproject.dto.UserDto;
 import com.learning.usermanagementproject.entity.User;
 import com.learning.usermanagementproject.service.UserService;
 import lombok.AllArgsConstructor;
@@ -18,28 +19,28 @@ public class UserController {
     private UserService userService;
 
     @PostMapping()
-    public ResponseEntity<User> createUser(@RequestBody User user){
-        User savedUser = userService.createUser(user);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto user){
+        UserDto savedUser = userService.createUser(user);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id){
-        User user = userService.getUserById(id);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<UserDto> getUserById(@PathVariable Long id){
+        UserDto userDto = userService.getUserById(id);
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @GetMapping()
-    public ResponseEntity<List<User>> getAllUsers(){
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserDto>> getAllUsers(){
+        List<UserDto> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PutMapping("{id}/update")
-    public ResponseEntity<User> updateUser(@PathVariable Long id,
-                                           @RequestBody User user){
-        user.setId(id);
-        User savedUser = userService.updateUser(id, user);
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long id,
+                                           @RequestBody UserDto userDto){
+        userDto.setId(id);
+        UserDto savedUser = userService.updateUser(id, userDto);
         return new ResponseEntity<>(savedUser, HttpStatus.OK);
     }
 
