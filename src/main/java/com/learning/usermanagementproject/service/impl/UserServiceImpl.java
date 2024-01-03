@@ -2,6 +2,7 @@ package com.learning.usermanagementproject.service.impl;
 
 import com.learning.usermanagementproject.dto.UserDto;
 import com.learning.usermanagementproject.entity.User;
+import com.learning.usermanagementproject.mapper.AutoUserMapper;
 import com.learning.usermanagementproject.mapper.UserMapper;
 import com.learning.usermanagementproject.repository.UserRepository;
 import com.learning.usermanagementproject.service.UserService;
@@ -23,12 +24,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto userDto) {
         //Convert UserDto to User JPA Entity
-        User user = modelMapper.map(userDto, User.class);
+        //User user = modelMapper.map(userDto, User.class);
+        User user = AutoUserMapper.MAPPER.mapToUser(userDto);
 
         User savedUser = userRepository.save(user);
 
         //Convert User JPA Entity to User DTO
-        UserDto savedUserDto = modelMapper.map(savedUser, UserDto.class);
+        //UserDto savedUserDto = modelMapper.map(savedUser, UserDto.class);
+        UserDto savedUserDto = AutoUserMapper.MAPPER.mapToUserDto(savedUser);
 
         return savedUserDto;
     }
@@ -36,13 +39,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long id) {
         User user = userRepository.findById(id).get();
-        return modelMapper.map(user, UserDto.class);
+        //return modelMapper.map(user, UserDto.class);
+        return AutoUserMapper.MAPPER.mapToUserDto(user);
     }
 
     @Override
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream().map((user) -> modelMapper.map(user, UserDto.class))
+        return users.stream().map(AutoUserMapper.MAPPER::mapToUserDto)
                 .collect(Collectors.toList());
     }
 
